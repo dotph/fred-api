@@ -11,4 +11,5 @@ Minitest::Reporters.use! [
 ]
 
 class ActiveSupport::TestCase
+  include FactoryGirl::Syntax::Methods
 end
