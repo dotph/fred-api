@@ -4,11 +4,20 @@ FactoryGirl.define do
     time_end    Time.now
     service_id  -1
     request_type
+    user_name   'alpha'
+
+    factory :contact_create_request do
+      association :request_type, factory: :contact_create_type
+    end
   end
 
   factory :request_type do
     name  'UnknownAction'
     service_id  -1
+
+    factory :contact_create_type do
+      name 'ContactCreate'
+    end
   end
 
   factory :request_property_value do
