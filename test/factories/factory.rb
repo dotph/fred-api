@@ -10,4 +10,13 @@ FactoryGirl.define do
     name  'UnknownAction'
     service_id  -1
   end
+
+  factory :request_property_value do
+    request_time_begin  Time.now
+    request_service_id  -1
+    request_monitoring  false
+    request
+    property_name_id    -1
+    value               'value'
+  end
 end
