@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+echo ""
+echo "  FRED Registry API"
+echo ""
+
+DB_USER=fredadmin
+
+# Check if PostgreSQL (or at least psql) is present
+if test ! $(which psql); then
+  echo "  x You need to install PostgreSQL"
+  exit
+else
+  echo "  + PostgreSQL found."
+fi
+
+# Check if Bundler is present
+if test ! $(which bundler); then
+  echo "  x You need to install Bundler:"
+  echo "    gem install bundler"
+  exit
+else
+  echo "  + Bundler found."
+fi
+
+echo "  + Installing dependencies..."
+bundle install --quiet
+
+echo "  + Running migrations..."
+rake db:drop
+dropuser --if-exists $DB_USER
+createuser $DB_USER -d
+rake db:create
+rake db:migrate
+
+echo ""
+echo "  We're ready to rock!"
