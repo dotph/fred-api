@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129081037) do
+ActiveRecord::Schema.define(version: 20150129083020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20150129081037) do
     t.boolean  "is_monitoring",   default: false, null: false
     t.integer  "result_code_id"
     t.integer  "user_id"
+  end
+
+  create_table "request_property_value", force: :cascade do |t|
+    t.datetime "request_time_begin",                 null: false
+    t.integer  "request_service_id",                 null: false
+    t.boolean  "request_monitoring",                 null: false
+    t.integer  "request_id",                         null: false
+    t.integer  "property_name_id",                   null: false
+    t.text     "value",                              null: false
+    t.boolean  "output",             default: false
+    t.integer  "parent_id"
   end
 
   create_table "request_type", force: :cascade do |t|
