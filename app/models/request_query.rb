@@ -1,6 +1,6 @@
 class RequestQuery
   def self.run
-    query.to_hash
+    group(query.to_hash)
   end
 
   private
@@ -22,5 +22,26 @@ class RequestQuery
       .join(property_name).on(property_value[:property_name_id].eq(property_name[:id]))
 
     Request.connection.select_all query.to_sql
+  end
+
+  def self.group records
+    groups = {}
+
+    records.each do |record|
+      id    = record['id']
+      name  = record['name']
+      value = record['value']
+
+      unless groups.include? id
+        groups[id] = {}
+      end
+
+      converted_name = name.sub('.', '_').downcase
+
+      group = groups[id]
+      group[converted_name] = value
+    end
+
+    groups.values
   end
 end
