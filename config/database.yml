@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: fredadmin
+  password: fredadmin
+
+development:
+  <<: *default
+  database: fred_development
+
+test: &test
+  <<: *default
+  database: fred_test
+
+production:
+  <<: *default
+  database: fred
