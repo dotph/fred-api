@@ -26,3 +26,8 @@ gem 'pg'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+end
