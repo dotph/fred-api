@@ -30,5 +30,10 @@ module FREDAPI
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Minitest-Spec should be default, and do not use Fixtures
+    config.generators do |g|
+      g.test_framework :minitest, spec: true, fixture: false
+    end
   end
 end
