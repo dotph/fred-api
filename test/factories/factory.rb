@@ -16,7 +16,11 @@ FactoryGirl.define do
     request_service_id  -1
     request_monitoring  false
     request
-    property_name_id    -1
+    request_property_name
     value               'value'
+  end
+
+  factory :request_property_name do
+    name  'property'
   end
 end
