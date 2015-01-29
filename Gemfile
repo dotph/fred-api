@@ -32,4 +32,5 @@ group :test do
   gem 'database_cleaner'
   gem 'minitest-rails'
   gem 'minitest-reporters'
+  gem 'factory_girl_rails'
 end
