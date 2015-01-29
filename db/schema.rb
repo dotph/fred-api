@@ -11,9 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150129080346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "request", force: :cascade do |t|
+    t.datetime "time_begin",                      null: false
+    t.datetime "time_end"
+    t.string   "source_ip"
+    t.integer  "service_id",                      null: false
+    t.integer  "request_type_id", default: 1000
+    t.integer  "session_id"
+    t.string   "user_name"
+    t.boolean  "is_monitoring",   default: false, null: false
+    t.integer  "result_code_id"
+    t.integer  "user_id"
+  end
 
 end
