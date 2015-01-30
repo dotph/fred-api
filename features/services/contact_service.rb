@@ -10,6 +10,7 @@ def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
   registry_response = REGISTRY_RESPONSES[request]
 
   stub_request(:post, contact_url)
+    .with(headers: default_headers)
     .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
 
   begin

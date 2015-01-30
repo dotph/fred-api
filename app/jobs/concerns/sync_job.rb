@@ -2,20 +2,20 @@ module SyncJob
   extend ActiveSupport::Concern
 
   def execute(action, path:, body:)
-    #token = authenticate
+    token = authenticate
 
-    #if token
+    if token
       headers = {
         'Content-Type' => 'application/json',
-        #'Authorization' => "Token token=\"#{token}\""
+        'Authorization' => "Token token=\"#{token}\""
       }
 
       response = HTTParty.send action, path, headers: headers, body: body.to_json
 
       raise "Code: #{response.code}, Message: #{response.parsed_response}" if error_code response.code
-    #else
-      #raise 'Authentication Failed'
-    #end
+    else
+      raise 'Authentication Failed'
+    end
   end
 
   private

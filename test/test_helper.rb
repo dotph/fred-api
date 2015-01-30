@@ -12,4 +12,8 @@ Minitest::Reporters.use! [
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
+
+  def authorizations_path
+    Rails.configuration.x.registry_url + '/authorizations'
+  end
 end
