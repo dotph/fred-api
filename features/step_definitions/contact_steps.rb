@@ -2,10 +2,6 @@ Given /^partner creates a new contact via EPP$/ do
   partner_creates_contact
 end
 
-Given /^contact already exists in Registry$/ do
-  contact_already_exists_in_registry
-end
-
 When /^system syncs latest created contacts to Registry$/ do
   system_syncs_latest_created_contacts
 end
