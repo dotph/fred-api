@@ -45,4 +45,36 @@ describe CreateContact do
       CreateContact.new(country_code: 'value').pi_countrycode.must_equal 'value'
     end
   end
+
+  describe :as_json do
+    it 'converts to JSON' do
+      expected_json = {
+        partner: 'alpha',
+        handle: 'contact_handle',
+        name: 'value',
+        organization: nil,
+        street: 'value',
+        city: 'value',
+        state: nil,
+        postal_code: 'value',
+        country_code: 'value',
+        phone: nil,
+        email: 'value'
+      }
+
+      create_contact = CreateContact.new  partner: 'alpha',
+                                          handle: 'contact_handle',
+                                          name: 'value',
+                                          organization: nil,
+                                          street: 'value',
+                                          city: 'value',
+                                          state: nil,
+                                          postal_code: 'value',
+                                          country_code: 'value',
+                                          phone: nil,
+                                          email: 'value'
+
+      create_contact.as_json.must_equal expected_json
+    end
+  end
 end

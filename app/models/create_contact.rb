@@ -15,4 +15,27 @@ class CreateContact
       self.new row.keep_if { |key| self.instance_methods.include? "#{key}=".to_sym }
     end
   end
+
+  def self.sync
+    all.each do |record|
+      response = HTTParty.post  'http://example.org/contacts',
+                                body: record.to_json
+    end
+  end
+
+  def as_json options = nil
+    {
+      partner:      self.partner,
+      handle:       self.handle,
+      name:         self.name,
+      organization: self.organization,
+      street:       self.street,
+      city:         self.city,
+      state:        self.state,
+      postal_code:  self.postal_code,
+      country_code: self.country_code,
+      phone:        self.phone,
+      email:        self.email
+    }
+  end
 end

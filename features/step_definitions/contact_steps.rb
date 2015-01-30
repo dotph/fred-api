@@ -3,9 +3,9 @@ Given /^partner creates a new contact via EPP$/ do
 end
 
 When /^system syncs latest created contacts to Registry$/ do
-  pending # express the regexp above with the code you wish you had
+  system_syncs_latest_created_contacts
 end
 
 Then /^response from Registry is success$/ do
-  pending # express the regexp above with the code you wish you had
+  assert_create_contact_synced
 end
