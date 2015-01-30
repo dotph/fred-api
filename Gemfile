@@ -33,4 +33,5 @@ group :test do
   gem 'minitest-spec-rails'
   gem 'minitest-reporters'
   gem 'factory_girl_rails'
+  gem 'webmock'
 end
