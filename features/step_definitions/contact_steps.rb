@@ -2,7 +2,13 @@ Given /^partner creates a new contact via EPP$/ do
   partner_creates_contact
 end
 
-When /^system syncs latest created contacts to Registry$/ do
+Given /^partner created contacts and were already synced$/ do
+  partner_creates_contact on: '2014-03-26'.to_time, handle: 'old'
+  partner_creates_contact on: '2014-03-19'.to_time, handle: 'older'
+  partner_creates_contact on: '2014-01-01'.to_time, handle: 'oldest'
+end
+
+When /^system syncs latest created contacts$/ do
   system_authenticated
   system_syncs_latest_created_contacts
 end
@@ -24,4 +30,8 @@ end
 
 Then /^response from Registry is success$/ do
   assert_create_contact_synced
+end
+
+Then /^no contacts must be synced$/ do
+  assert_no_contacts_synced
 end

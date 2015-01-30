@@ -4,13 +4,13 @@ Feature: Create Contact
 
   Scenario: Successfully sync contact
     Given partner creates a new contact via EPP
-    When  system syncs latest created contacts to Registry
+    When  system syncs latest created contacts
     Then  response from Registry is success
 
   Scenario: Registry is unavailable
     Given Registry is unavailable
     And   partner creates a new contact via EPP
-    When  system syncs latest created contacts to Registry
+    When  system syncs latest created contacts
     Then  sync must time out
 
   Scenario Outline: Registry rejects invalid syncs
@@ -23,3 +23,9 @@ Feature: Create Contact
       | invalid field values  | validation failed |
       | incomplete fields     | bad request       |
       | empty request         | bad request       |
+
+  @wip
+  Scenario: Exclude contacts that were already synced
+    Given partner created contacts and were already synced
+    When  system syncs latest created contacts
+    Then  no contacts must be synced

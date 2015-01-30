@@ -1,5 +1,5 @@
-def create_contact handle: 'contact_handle'
-  request = create :contact_create_request
+def create_contact handle: 'contact_handle', on: Time.now
+  request = create :contact_create_request, time_begin: on, time_end: on
 
   create_property request: request, name: 'handle',   value: handle
   create_property request: request, name: 'partner',  value: 'alpha'

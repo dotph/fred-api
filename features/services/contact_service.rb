@@ -2,8 +2,8 @@ def contact_url
   REGISTRY_URL + '/contacts'
 end
 
-def partner_creates_contact
-  create_contact
+def partner_creates_contact handle: 'contact_handle', on: Time.now
+  create_contact handle: handle, on: on
 end
 
 def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
@@ -24,6 +24,10 @@ def assert_create_contact_synced
   assert_requested :post, contact_url,
                           body: create_contact_request.to_json,
                           times: 1
+end
+
+def assert_no_contacts_synced
+  assert_not_requested :post, contact_url
 end
 
 def create_contact_request
