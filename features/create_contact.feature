@@ -22,3 +22,4 @@ Feature: Create Contact
       | invalid request       | error message     |
       | invalid field values  | validation failed |
       | incomplete fields     | bad request       |
+      | empty request         | bad request       |

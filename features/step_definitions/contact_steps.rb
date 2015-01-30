@@ -17,6 +17,11 @@ When /^system syncs latest created contacts with incomplete fields$/ do
   system_syncs_latest_created_contacts request: INCOMPLETE_FIELDS
 end
 
+When /^system syncs latest created contacts with empty request$/ do
+  system_authenticated
+  system_syncs_latest_created_contacts request: EMPTY_REQUEST
+end
+
 Then /^response from Registry is success$/ do
   assert_create_contact_synced
 end

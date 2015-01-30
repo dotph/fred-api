@@ -11,6 +11,7 @@ REGISTRY_RESPONSES = {
 VALID_CREATE_REQUEST    = :created
 INVALID_REQUEST_VALUES  = :validation_failed
 INCOMPLETE_FIELDS       = :bad_request
+EMPTY_REQUEST           = :bad_request
 
 def system_authenticated
   stub_request(:post, AUTHORIZATION_URL).to_return(status: 201, body: { token: 'ABCDEF' }.to_json)
