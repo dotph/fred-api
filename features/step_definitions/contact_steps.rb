@@ -1,5 +1,5 @@
 Given /^partner creates a new contact via EPP$/ do
-  create_contact
+  partner_creates_contact
 end
 
 When /^system syncs latest created contacts to Registry$/ do
