@@ -16,4 +16,12 @@ describe SyncLog do
       SyncLog.last_run(current_time: current_time).must_equal current_time
     end
   end
+
+  describe :aliases do
+    it 'aliases until as up_to' do
+      current_time = Time.now
+
+      SyncLog.new(until: current_time).up_to.must_equal current_time
+    end
+  end
 end

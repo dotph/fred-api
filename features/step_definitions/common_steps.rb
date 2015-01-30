@@ -2,6 +2,10 @@ Given /^Registry is unavailable$/ do
   registry_unavailable
 end
 
+Given /^system just completed syncing records$/ do
+  system_completed_sync
+end
+
 Then /^sync must time out$/ do
   assert_exception_must_be_timed_out
 end

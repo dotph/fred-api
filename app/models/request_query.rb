@@ -1,11 +1,11 @@
 class RequestQuery
-  def self.run
-    group(query.to_hash)
+  def self.run since:, up_to:
+    group(query(since: since, up_to: up_to).to_hash)
   end
 
   private
 
-  def self.query
+  def self.query since:, up_to:
     request = Arel::Table.new('request')
     type = Arel::Table.new('request_type')
     property_name = Arel::Table.new('request_property_name')
@@ -20,6 +20,8 @@ class RequestQuery
       .join(type).on(request[:request_type_id].eq(type[:id]))
       .join(property_value).on(request[:id].eq(property_value[:request_id]))
       .join(property_name).on(property_value[:property_name_id].eq(property_name[:id]))
+      .where(request[:time_begin].gt(since))
+      .where(request[:time_end].lteq(up_to))
 
     Request.connection.select_all query.to_sql
   end

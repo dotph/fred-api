@@ -13,10 +13,15 @@ def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
     .with(headers: default_headers)
     .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
 
+  since = SyncLog.last_run
+  up_to = Request.latest_time
+
   begin
-    CreateContact.sync since: nil, up_to: nil
+    CreateContact.sync since: since, up_to: up_to
   rescue => e
     @exception_thrown = e
+  ensure
+    SyncLog.create since: since, until: up_to
   end
 end
 

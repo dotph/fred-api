@@ -30,6 +30,12 @@ def registry_unavailable
   WebMock.allow_net_connect!
 end
 
+def system_completed_sync
+  last_run = Time.now - 1.minute
+
+  SyncLog.create since: last_run, up_to: last_run
+end
+
 def assert_exception_must_be_timed_out
   @exception_thrown.message.must_include 'getaddrinfo'
 end

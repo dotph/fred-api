@@ -1,4 +1,6 @@
 class SyncLog < ActiveRecord::Base
+  alias_attribute :up_to, :until
+
   def self.last_run current_time: Time.now
     latest_record = order(until: :desc).first
 

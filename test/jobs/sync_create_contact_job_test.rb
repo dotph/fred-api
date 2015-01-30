@@ -3,7 +3,7 @@ require 'test_helper'
 describe SyncCreateContactJob do
   describe :perform_later do
     it 'POSTs a new contact' do
-      create_contact
+      create_contact on: '2015-01-30 6:00 PM'.to_time
 
       stub_request(:post, authorizations_path).to_return(status: 201, body: {token: 'ABCDEF'}.to_json)
       stub_request(:post, SyncCreateContactJob::PATH).to_return(status: 201)
@@ -22,9 +22,10 @@ describe SyncCreateContactJob do
         email: 'value'
       }
 
-      contacts = CreateContact.all  since: '2015-01-07 4:00 PM'.to_time,
-                                    up_to: '2015-01-07 4:20 PM'.to_time
+      contacts = CreateContact.all  since: '2015-01-30 5:30 PM'.to_time,
+                                    up_to: '2015-01-30 6:00 PM'.to_time
 
+      contacts.wont_be_empty
 
       perform_enqueued_jobs do
         SyncCreateContactJob.perform_later contacts.first.as_json

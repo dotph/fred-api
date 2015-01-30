@@ -3,9 +3,12 @@ require 'test_helper'
 describe CreateContact do
   describe :all do
     it 'returns all new contacts' do
-      create_contact
+      current_time = Time.now
 
-      result = CreateContact.all since: nil, up_to: nil
+      create_contact on: current_time + 1.minute
+
+      result = CreateContact.all  since: current_time,
+                                  up_to: current_time + 1.minute
 
       result.count.must_equal 1
 
@@ -21,6 +24,12 @@ describe CreateContact do
       contact.country_code.must_equal 'value'
       contact.phone.must_be_nil
       contact.email.must_equal 'value'
+    end
+
+    it 'returns empty list if no contacts found' do
+      result = CreateContact.all since: Time.now, up_to: Time.now
+
+      result.must_be_empty
     end
   end
 

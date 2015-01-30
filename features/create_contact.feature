@@ -2,6 +2,9 @@ Feature: Create Contact
   As a Partner
   I want the contacts I created via EPP synced to Registry
 
+  Background:
+    Given system just completed syncing records
+
   Scenario: Successfully sync contact
     Given partner creates a new contact via EPP
     When  system syncs latest created contacts
@@ -24,7 +27,6 @@ Feature: Create Contact
       | incomplete fields     | bad request       |
       | empty request         | bad request       |
 
-  @wip
   Scenario: Exclude contacts that were already synced
     Given partner created contacts and were already synced
     When  system syncs latest created contacts
