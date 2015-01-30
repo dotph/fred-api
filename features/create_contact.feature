@@ -13,12 +13,12 @@ Feature: Create Contact
     When  system syncs latest created contacts to Registry
     Then  sync must time out
 
-  Scenario: Registry rejects sync with invalid field values
+  Scenario Outline: Registry rejects invalid syncs
     Given partner creates a new contact via EPP
-    When  system syncs latest created contacts with invalid field values
-    Then  response from Registry must be validation failure
+    When  system syncs latest created contacts with <invalid request>
+    Then  response from Registry must be <error message>
 
-  Scenario: Registry rejects sync with incomplete fields
-    Given partner creates a new contact via EPP
-    When  system syncs latest created contacts with incomplete fields
-    Then  response from Registry must be bad request
+    Examples:
+      | invalid request       | error message     |
+      | invalid field values  | validation failed |
+      | incomplete fields     | bad request       |
