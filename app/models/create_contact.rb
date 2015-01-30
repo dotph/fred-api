@@ -21,8 +21,12 @@ class CreateContact
       response = HTTParty.post  'http://registry.host/contacts',
                                 body: record.to_json
 
-      raise "Code: #{response.code}, Message: #{response.parsed_response}" if response.code == 422
+      raise "Code: #{response.code}, Message: #{response.parsed_response}" if error_code? response.code
     end
+  end
+
+  def self.error_code? code
+    (400..599).include? code
   end
 
   def as_json options = nil

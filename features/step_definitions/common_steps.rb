@@ -9,3 +9,7 @@ end
 Then /^response from Registry must be validation failure$/ do
   assert_exception_must_be_validation_failed
 end
+
+Then /^response from Registry must be bad request$/ do
+  assert_exception_must_be_bad_request
+end
