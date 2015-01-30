@@ -11,6 +11,8 @@ class CreateContact
   alias_attribute :pi_countrycode,  :country_code
 
   def self.all
-    RequestQuery.run.collect { |row| self.new row }
+    RequestQuery.run.collect do |row|
+      self.new row.keep_if { |key| self.instance_methods.include? "#{key}=".to_sym }
+    end
   end
 end

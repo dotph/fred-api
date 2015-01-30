@@ -8,6 +8,19 @@ describe CreateContact do
       result = CreateContact.all
 
       result.count.must_equal 1
+
+      contact = result.first
+      contact.partner.must_equal 'alpha'
+      contact.handle.must_equal 'contact_handle'
+      contact.name.must_equal 'value'
+      contact.organization.must_be_nil
+      contact.street.must_equal 'value'
+      contact.city.must_equal 'value'
+      contact.state.must_be_nil
+      contact.postal_code.must_equal 'value'
+      contact.country_code.must_equal 'value'
+      contact.phone.must_be_nil
+      contact.email.must_equal 'value'
     end
   end
 
