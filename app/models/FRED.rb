@@ -3,7 +3,6 @@ class FRED
     request = create_request request_type: contact_create_request, partner: partner
 
     create_property request: request, name: 'handle',   value: handle
-    create_property request: request, name: 'partner',  value: partner
     create_property request: request, name: 'rc',       value: 1000
     create_property request: request, name: 'msg',      value: 'Command completed successfully'
 

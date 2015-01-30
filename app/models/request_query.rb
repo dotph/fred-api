@@ -30,9 +30,10 @@ class RequestQuery
     groups = {}
 
     records.each do |record|
-      id    = record['id']
-      name  = record['name']
-      value = record['value']
+      id      = record['id']
+      name    = record['name']
+      value   = record['value']
+      partner = record['partner']
 
       unless groups.include? id
         groups[id] = {}
@@ -42,6 +43,8 @@ class RequestQuery
 
       group = groups[id]
       group[converted_name] = value
+
+      group['partner'] = partner unless group.include? 'partner'
     end
 
     groups.values

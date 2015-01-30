@@ -51,35 +51,35 @@ describe RequestQuery do
   describe :group do
     it 'groups all records' do
       records = [
-        { 'id' => 1, 'name' => 'a', 'value' => 'a_value' },
-        { 'id' => 1, 'name' => 'b', 'value' => 'b_value' },
-        { 'id' => 1, 'name' => 'c', 'value' => 'c_value' },
+        { 'id' => 1, 'partner' => 'alpha', 'name' => 'a', 'value' => 'a_value' },
+        { 'id' => 1, 'partner' => 'alpha', 'name' => 'b', 'value' => 'b_value' },
+        { 'id' => 1, 'partner' => 'alpha', 'name' => 'c', 'value' => 'c_value' },
       ]
 
       result = RequestQuery.group(records)
 
       result.count.must_equal 1
-      result.first.must_equal({ 'a' => 'a_value', 'b' => 'b_value', 'c' => 'c_value' })
+      result.first.must_equal({ 'partner' => 'alpha', 'a' => 'a_value', 'b' => 'b_value', 'c' => 'c_value' })
     end
 
     it 'converts . to _' do
       records = [
-        { 'id' => 1, 'name' => 'a.x', 'value' => 'a_value' }
+        { 'id' => 1, 'partner' => 'alpha', 'name' => 'a.x', 'value' => 'a_value' }
       ]
 
       result = RequestQuery.group(records)
 
-      result.first.must_equal({ 'a_x' => 'a_value' })
+      result.first.must_equal({ 'partner' => 'alpha', 'a_x' => 'a_value' })
     end
 
     it 'converts to downcase' do
       records = [
-        { 'id' => 1, 'name' => 'Ax', 'value' => 'a_value' }
+        { 'id' => 1, 'partner' => 'alpha', 'name' => 'Ax', 'value' => 'a_value' }
       ]
 
       result = RequestQuery.group(records)
 
-      result.first.must_equal({ 'ax' => 'a_value' })
+      result.first.must_equal({ 'partner' => 'alpha', 'ax' => 'a_value' })
     end
 
     it 'returns empty list if records empty' do
