@@ -5,7 +5,7 @@ describe CreateContact do
     it 'returns all new contacts' do
       create_contact
 
-      result = CreateContact.all
+      result = CreateContact.all since: nil, up_to: nil
 
       result.count.must_equal 1
 

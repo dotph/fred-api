@@ -1,4 +1,4 @@
-REGISTRY_URL = 'http://registry.host'
+REGISTRY_URL = Rails.configuration.x.registry_url
 
 REGISTRY_RESPONSES = {
   ok:                 { status: 200, body: {} },

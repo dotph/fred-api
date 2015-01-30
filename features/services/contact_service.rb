@@ -13,7 +13,7 @@ def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
     .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
 
   begin
-    CreateContact.sync
+    CreateContact.sync since: nil, up_to: nil
   rescue => e
     @exception_thrown = e
   end

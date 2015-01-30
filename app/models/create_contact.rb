@@ -10,23 +10,16 @@ class CreateContact
   alias_attribute :pi_postalcode,   :postal_code
   alias_attribute :pi_countrycode,  :country_code
 
-  def self.all
+  def self.all since:, up_to:
     RequestQuery.run.collect do |row|
       self.new row.keep_if { |key| self.instance_methods.include? "#{key}=".to_sym }
     end
   end
 
-  def self.sync
-    all.each do |record|
-      response = HTTParty.post  'http://registry.host/contacts',
-                                body: record.to_json
-
-      raise "Code: #{response.code}, Message: #{response.parsed_response}" if error_code? response.code
+  def self.sync since:, up_to:
+    all(since: since, up_to: up_to).each do |record|
+      SyncCreateContactJob.perform_later record.as_json
     end
-  end
-
-  def self.error_code? code
-    (400..599).include? code
   end
 
   def as_json options = nil
