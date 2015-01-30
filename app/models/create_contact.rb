@@ -20,6 +20,8 @@ class CreateContact
     all.each do |record|
       response = HTTParty.post  'http://registry.host/contacts',
                                 body: record.to_json
+
+      raise "Code: #{response.code}, Message: #{response.parsed_response}" if response.code == 422
     end
   end
 

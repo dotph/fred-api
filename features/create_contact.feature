@@ -12,3 +12,8 @@ Feature: Create Contact
     And   partner creates a new contact via EPP
     When  system syncs latest created contacts to Registry
     Then  sync must time out
+
+  Scenario: Registry rejects sync with invalid field values
+    Given partner creates a new contact via EPP
+    When  system syncs latest created contacts with invalid field values
+    Then  response from Registry must be validation failure

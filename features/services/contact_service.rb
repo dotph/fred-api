@@ -1,11 +1,16 @@
+def contact_url
+  REGISTRY_URL + '/contacts'
+end
+
 def partner_creates_contact
   create_contact
 end
 
-def system_syncs_latest_created_contacts
-  stub_request(:post, 'http://registry.host/contacts')
-    .with(body: create_contact_request.to_json)
-    .to_return(status: 201, body: {}.to_json) unless @registry_unavailable
+def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
+  registry_response = REGISTRY_RESPONSES[request]
+
+  stub_request(:post, contact_url)
+    .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
 
   begin
     CreateContact.sync
@@ -15,7 +20,7 @@ def system_syncs_latest_created_contacts
 end
 
 def assert_create_contact_synced
-  assert_requested :post, 'http://registry.host/contacts',
+  assert_requested :post, contact_url,
                           body: create_contact_request.to_json,
                           times: 1
 end
