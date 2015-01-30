@@ -3,16 +3,19 @@ def partner_creates_contact
 end
 
 def system_syncs_latest_created_contacts
-  stub_request(:post, 'http://example.org/contacts')
+  stub_request(:post, 'http://registry.host/contacts')
     .with(body: create_contact_request.to_json)
-    .to_return  status: 201,
-                body: {}.to_json
+    .to_return(status: 201, body: {}.to_json) unless @registry_unavailable
 
-  CreateContact.sync
+  begin
+    CreateContact.sync
+  rescue => e
+    @exception_thrown = e
+  end
 end
 
 def assert_create_contact_synced
-  assert_requested :post, 'http://example.org/contacts',
+  assert_requested :post, 'http://registry.host/contacts',
                           body: create_contact_request.to_json,
                           times: 1
 end

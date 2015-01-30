@@ -6,3 +6,9 @@ Feature: Create Contact
     Given partner creates a new contact via EPP
     When  system syncs latest created contacts to Registry
     Then  response from Registry is success
+
+  Scenario: Registry is unavailable
+    Given Registry is unavailable
+    And   partner creates a new contact via EPP
+    When  system syncs latest created contacts to Registry
+    Then  sync must time out

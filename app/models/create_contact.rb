@@ -18,7 +18,7 @@ class CreateContact
 
   def self.sync
     all.each do |record|
-      response = HTTParty.post  'http://example.org/contacts',
+      response = HTTParty.post  'http://registry.host/contacts',
                                 body: record.to_json
     end
   end
