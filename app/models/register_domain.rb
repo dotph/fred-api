@@ -7,7 +7,7 @@ class RegisterDomain
   alias_attribute :registrant,  :registrant_handle
 
   def self.all since:, up_to:
-    RequestQuery.run(since: since, up_to: up_to).collect do |row|
+    RequestQuery.run(since: since, up_to: up_to, type: RequestType::DOMAIN_CREATE).collect do |row|
       self.new row.keep_if { |key| self.instance_methods.include? "#{key}=".to_sym }
     end
   end

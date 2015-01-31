@@ -1,21 +1,38 @@
 require 'test_helper'
 
 describe RequestQuery do
-  describe :run_contact_create do
-    it 'returns records within the timeframe' do
-      create_contact on: '2015-01-30 5:30 PM'.to_time
+  describe :run do
+    before do
+      @current_time = Time.now
+      @create_time  = @current_time + 1.minute
 
-      result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time
+      create_contact  on: @create_time
+      register_domain on: @create_time
+      register_domain on: @create_time
+    end
+
+    it 'returns contact_create requests' do
+      result = RequestQuery.run since: @current_time,
+                                up_to: @create_time,
+                                type: RequestType::CONTACT_CREATE
 
       result.count.must_equal 1
+    end
+
+    it 'returns contact_create requests' do
+      result = RequestQuery.run since: @current_time,
+                                up_to: @create_time,
+                                type: RequestType::DOMAIN_CREATE
+
+      result.count.must_equal 2
     end
 
     it 'returns records with time_end same as up_to' do
       create_contact on: '2015-01-30 6:00 PM'.to_time
 
       result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time
+                                up_to: '2015-01-30 6:00 PM'.to_time,
+                                type:  RequestType::CONTACT_CREATE
 
       result.count.must_equal 1
     end
@@ -24,7 +41,8 @@ describe RequestQuery do
       create_contact on: '2015-01-30 5:00 PM'.to_time
 
       result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time
+                                up_to: '2015-01-30 6:00 PM'.to_time,
+                                type:  RequestType::CONTACT_CREATE
 
       result.must_be_empty
     end
@@ -33,7 +51,8 @@ describe RequestQuery do
       create_contact on: '2015-01-30 6:01 PM'.to_time
 
       result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time
+                                up_to: '2015-01-30 6:00 PM'.to_time,
+                                type:  RequestType::CONTACT_CREATE
 
       result.must_be_empty
     end
@@ -42,7 +61,8 @@ describe RequestQuery do
       create_contact on: '2015-01-30 4:59 PM'.to_time
 
       result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time
+                                up_to: '2015-01-30 6:00 PM'.to_time,
+                                type:  RequestType::CONTACT_CREATE
 
       result.must_be_empty
     end
