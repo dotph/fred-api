@@ -15,3 +15,15 @@ Feature: Register Domain
     And   partner registers a domain via EPP
     When  system syncs latest registered domains
     Then  sync must time out
+
+  Scenario Outline: Registry rejects invalid syncs
+    Given partner registers a domain via EPP
+    When  system syncs latest registered domains with <invalid request>
+    Then  sync must raise <error message>
+
+    Examples:
+      | invalid request                     | error message         |
+      | invalid field values                | validation failed     |
+      | incomplete fields                   | bad request           |
+      | empty request                       | bad request           |
+      | invalid authentication credentials  | authentication failed |
