@@ -9,3 +9,9 @@ Feature: Register Domain
     Given partner registers a domain via EPP
     When  system syncs latest registered domains
     Then  latest registered domains must be synced
+
+  Scenario: Registry is unavailable
+    Given Registry is unavailable
+    And   partner registers a domain via EPP
+    When  system syncs latest registered domains
+    Then  sync must time out
