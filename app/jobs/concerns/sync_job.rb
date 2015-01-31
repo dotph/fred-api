@@ -5,14 +5,7 @@ module SyncJob
     token = authenticate
 
     if token
-      headers = {
-        'Content-Type' => 'application/json',
-        'Authorization' => "Token token=\"#{token}\""
-      }
-
-      response = HTTParty.send action, path, headers: headers, body: body.to_json
-
-      raise "Code: #{response.code}, Message: #{response.parsed_response}" if error_code response.code
+      execute_authenticated action, path: path, body: body, token: token
     else
       raise 'Authentication Failed'
     end
@@ -20,19 +13,39 @@ module SyncJob
 
   private
 
-  def authenticate
-    request = {
-         username: Rails.configuration.x.registry_username,
-         password: Rails.configuration.x.registry_password
-    }
+  def execute_authenticated(action, path:, body:, token:)
+    response = HTTParty.send action,  path,
+                                      headers: headers(token: token),
+                                      body: body.to_json
 
+    raise "Code: #{response.code}, Message: #{response.parsed_response}" if error_code response.code
+  end
+
+  def authenticate
     response = HTTParty.post  Rails.configuration.x.registry_authorization_url,
-                              headers: { 'Content-Type' => 'application/json' },
-                              body: request.to_json
+                              headers: headers,
+                              body: authorization_request.to_json
 
     json_response = JSON.parse response.body, symbolize_names: true
 
     json_response[:token] unless error_code response.code
+  end
+
+  def authorization_request
+    {
+      username: Rails.configuration.x.registry_username,
+      password: Rails.configuration.x.registry_password
+    }
+  end
+
+  def headers token: nil
+    headers = {
+      'Content-Type' => 'application/json',
+    }
+
+    headers['Authorization'] = "Token token=\"#{token}\"" if token
+
+    headers
   end
 
   def error_code code
