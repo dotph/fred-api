@@ -13,6 +13,10 @@ INVALID_REQUEST_VALUES  = :validation_failed
 INCOMPLETE_FIELDS       = :bad_request
 EMPTY_REQUEST           = :bad_request
 
+def orders_url
+  REGISTRY_URL + '/orders'
+end
+
 def system_authenticated
   stub_request(:post, AUTHORIZATION_URL).to_return(status: 201, body: { token: 'ABCDEF' }.to_json)
 end
@@ -43,6 +47,10 @@ end
 
 def assert_sync_timed_out
   @exception_thrown.message.must_include 'getaddrinfo'
+end
+
+def assert_no_exception_thrown
+  @exception_thrown.must_be_nil
 end
 
 def assert_exception_must_be_validation_failed
