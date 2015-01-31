@@ -1,4 +1,4 @@
-Given /^partner creates a new contact via EPP$/ do
+Given /^partner creates a contact via EPP$/ do
   partner_creates_contact
 end
 

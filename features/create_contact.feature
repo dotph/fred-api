@@ -6,18 +6,18 @@ Feature: Create Contact
     Given system just completed syncing records
 
   Scenario: Successfully sync latest created contacts
-    Given partner creates a new contact via EPP
+    Given partner creates a contact via EPP
     When  system syncs latest created contacts
     Then  latest created contacts must be synced
 
   Scenario: Registry is unavailable
     Given Registry is unavailable
-    And   partner creates a new contact via EPP
+    And   partner creates a contact via EPP
     When  system syncs latest created contacts
     Then  sync must time out
 
   Scenario Outline: Registry rejects invalid syncs
-    Given partner creates a new contact via EPP
+    Given partner creates a contact via EPP
     When  system syncs latest created contacts with <invalid request>
     Then  sync must raise <error message>
 
