@@ -8,7 +8,7 @@ Feature: Create Contact
   Scenario: Successfully sync contact
     Given partner creates a new contact via EPP
     When  system syncs latest created contacts
-    Then  response from Registry is success
+    Then  latest created contacts are synced
 
   Scenario: Registry is unavailable
     Given Registry is unavailable
