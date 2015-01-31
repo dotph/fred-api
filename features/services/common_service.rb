@@ -13,6 +13,10 @@ INVALID_REQUEST_VALUES  = :validation_failed
 INCOMPLETE_FIELDS       = :bad_request
 EMPTY_REQUEST           = :bad_request
 
+def contacts_url
+  REGISTRY_URL + '/contacts'
+end
+
 def orders_url
   REGISTRY_URL + '/orders'
 end

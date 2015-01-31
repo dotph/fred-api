@@ -1,7 +1,3 @@
-def contact_url
-  REGISTRY_URL + '/contacts'
-end
-
 def partner_creates_contact handle: 'contact_handle', on: Time.now
   create_contact handle: handle, on: on
 end
@@ -9,7 +5,7 @@ end
 def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
   registry_response = REGISTRY_RESPONSES[request]
 
-  stub_request(:post, contact_url)
+  stub_request(:post, contacts_url)
     .with(headers: default_headers)
     .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
 
@@ -26,13 +22,13 @@ def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
 end
 
 def assert_create_contact_synced
-  assert_requested :post, contact_url,
+  assert_requested :post, contacts_url,
                           body: create_contact_request.to_json,
                           times: 1
 end
 
 def assert_no_contacts_synced
-  assert_not_requested :post, contact_url
+  assert_not_requested :post, contacts_url
 end
 
 def create_contact_request
