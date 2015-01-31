@@ -6,5 +6,9 @@ FactoryGirl.define do
     factory :contact_create_type do
       name 'ContactCreate'
     end
+
+    factory :domain_create_type do
+      name 'ContactCreate'
+    end
   end
 end

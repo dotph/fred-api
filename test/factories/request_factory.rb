@@ -9,5 +9,9 @@ FactoryGirl.define do
     factory :contact_create_request do
       association :request_type, factory: :contact_create_type
     end
+
+    factory :domain_create_request do
+      association :request_type, factory: :domain_create_type
+    end
   end
 end
