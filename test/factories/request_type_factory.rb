@@ -4,11 +4,11 @@ FactoryGirl.define do
     service_id  -1
 
     factory :contact_create_type do
-      name 'ContactCreate'
+      name RequestType::CONTACT_CREATE
     end
 
     factory :domain_create_type do
-      name 'ContactCreate'
+      name RequestType::DOMAIN_CREATE
     end
   end
 end
