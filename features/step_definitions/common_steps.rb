@@ -6,7 +6,7 @@ Given /^system just completed syncing records$/ do
   system_completed_sync
 end
 
-Then /^sync times out$/ do
+Then /^sync must time out$/ do
   assert_sync_timed_out
 end
 

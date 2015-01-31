@@ -28,7 +28,7 @@ When /^system syncs latest created contacts with empty request$/ do
   system_syncs_latest_created_contacts request: EMPTY_REQUEST
 end
 
-Then /^latest created contacts are synced$/ do
+Then /^latest created contacts must be synced$/ do
   assert_create_contact_synced
 end
 
