@@ -19,7 +19,7 @@ Feature: Create Contact
   Scenario Outline: Registry rejects invalid syncs
     Given partner creates a new contact via EPP
     When  system syncs latest created contacts with <invalid request>
-    Then  response from Registry must be <error message>
+    Then  sync must raise <error message>
 
     Examples:
       | invalid request       | error message     |

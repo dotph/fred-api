@@ -10,10 +10,10 @@ Then /^sync must time out$/ do
   assert_sync_timed_out
 end
 
-Then /^response from Registry must be validation failed$/ do
+Then /^sync must raise validation failed$/ do
   assert_exception_must_be_validation_failed
 end
 
-Then /^response from Registry must be bad request$/ do
+Then /^sync must raise bad request$/ do
   assert_exception_must_be_bad_request
 end
