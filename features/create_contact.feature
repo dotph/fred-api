@@ -22,10 +22,11 @@ Feature: Create Contact
     Then  sync must raise <error message>
 
     Examples:
-      | invalid request       | error message     |
-      | invalid field values  | validation failed |
-      | incomplete fields     | bad request       |
-      | empty request         | bad request       |
+      | invalid request                     | error message         |
+      | invalid field values                | validation failed     |
+      | incomplete fields                   | bad request           |
+      | empty request                       | bad request           |
+      | invalid authentication credentials  | authentication failed |
 
   Scenario: Exclude contacts that were already synced
     Given partner created contacts and were already synced

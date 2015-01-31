@@ -17,6 +17,11 @@ def system_authenticated
   stub_request(:post, AUTHORIZATION_URL).to_return(status: 201, body: { token: 'ABCDEF' }.to_json)
 end
 
+def system_authentication_failed
+  stub_request(:post, AUTHORIZATION_URL)
+    .to_return(status: 422, body: { message: 'Bad Credentials' }.to_json)
+end
+
 def default_headers
   {
     'Content-Type' => 'application/json',
@@ -46,4 +51,8 @@ end
 
 def assert_exception_must_be_bad_request
   @exception_thrown.message.must_equal 'Code: 400, Message: {"message":"Bad Request"}'
+end
+
+def assert_exception_must_be_authentication_failed
+  @exception_thrown.message.must_equal 'Authentication Failed'
 end

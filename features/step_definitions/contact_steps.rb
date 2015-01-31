@@ -28,6 +28,11 @@ When /^system syncs latest created contacts with empty request$/ do
   system_syncs_latest_created_contacts request: EMPTY_REQUEST
 end
 
+When /^system syncs latest created contacts with invalid authentication credentials$/ do
+  system_authentication_failed
+  system_syncs_latest_created_contacts
+end
+
 Then /^latest created contacts must be synced$/ do
   assert_create_contact_synced
 end

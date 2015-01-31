@@ -17,3 +17,7 @@ end
 Then /^sync must raise bad request$/ do
   assert_exception_must_be_bad_request
 end
+
+Then /^sync must raise authentication failed$/ do
+  assert_exception_must_be_authentication_failed
+end
