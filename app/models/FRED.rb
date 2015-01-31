@@ -1,6 +1,6 @@
 class FRED
   def self.create_contact handle, partner: 'alpha'
-    request = create_request request_type: contact_create_request, partner: partner
+    request = create_request request_type: contact_create_type, partner: partner
 
     create_property request: request, name: 'handle',   value: handle
     create_property request: request, name: 'rc',       value: 1000
@@ -9,6 +9,24 @@ class FRED
     ['pi.name', 'pi.street', 'pi.city', 'pi.postalCode', 'pi.countryCode', 'email'].each do |name|
       create_property request: request, name: name,  value: 'value'
     end
+
+    request
+  end
+
+  def self.register_domain name, registrant, partner: 'alpha'
+    request = create_request request_type: domain_create_type, partner: partner
+
+    create_property request: request, name: 'handle',     value: name
+    create_property request: request, name: 'registrant', value: registrant
+    create_property request: request, name: 'period',     value: 1
+    create_property request: request, name: 'timeunit',   value: 'Year'
+    create_property request: request, name: 'nsset',      value: 'ABC123'
+    create_property request: request, name: 'authInfo',   value: 'ABC123'
+
+    create_property request: request, name: 'rc',         value: 1000
+    create_property request: request, name: 'msg',        value: 'Command completed successfully'
+
+    request
   end
 
   private
@@ -21,16 +39,28 @@ class FRED
                     user_name:  partner
   end
 
-  def self.contact_create_request
-    unless RequestType.exists?(name: RequestType::CONTACT_CREATE)
-      RequestType.create name: RequestType::CONTACT_CREATE, service_id: -1
+  def self.contact_create_type
+    create_request_type RequestType::CONTACT_CREATE
+  end
+
+  def self.domain_create_type
+    create_request_type RequestType::DOMAIN_CREATE
+  end
+
+  def self.create_request_type name
+    unless RequestType.exists?(name: name)
+      RequestType.create name: name, service_id: -1
     end
 
-    RequestType.find_by(name: RequestType::CONTACT_CREATE)
+    RequestType.find_by(name: name)
   end
 
   def self.create_property name:, value:, request:
-    property_name = RequestPropertyName.create name: name
+    unless RequestPropertyName.exists?(name: name)
+      RequestPropertyName.create name: name
+    end
+
+    property_name = RequestPropertyName.find_by(name: name)
 
     RequestPropertyValue.create request_time_begin:     Time.now,
                                 request_service_id:     -1,
