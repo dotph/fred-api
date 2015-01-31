@@ -4,5 +4,4 @@ set -e
 
 ./script/bootstrap
 rbenv rehash
-bundle exec rake test
-bundle exec rake cucumber
+bundle exec rake
