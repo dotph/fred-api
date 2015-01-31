@@ -14,7 +14,7 @@ Feature: Create Contact
     Given Registry is unavailable
     And   partner creates a new contact via EPP
     When  system syncs latest created contacts
-    Then  sync must time out
+    Then  sync times out
 
   Scenario Outline: Registry rejects invalid syncs
     Given partner creates a new contact via EPP

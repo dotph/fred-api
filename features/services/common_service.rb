@@ -36,7 +36,7 @@ def system_completed_sync
   SyncLog.create since: last_run, up_to: last_run
 end
 
-def assert_exception_must_be_timed_out
+def assert_sync_timed_out
   @exception_thrown.message.must_include 'getaddrinfo'
 end
 
