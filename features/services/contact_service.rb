@@ -22,12 +22,16 @@ def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
 end
 
 def assert_create_contact_synced
+  assert_no_exception_thrown
+
   assert_requested :post, contacts_url,
                           body: create_contact_request.to_json,
                           times: 1
 end
 
 def assert_no_contacts_synced
+  assert_no_exception_thrown
+
   assert_not_requested :post, contacts_url
 end
 
