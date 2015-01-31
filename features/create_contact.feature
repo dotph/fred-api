@@ -5,7 +5,7 @@ Feature: Create Contact
   Background:
     Given system just completed syncing records
 
-  Scenario: Successfully sync contact
+  Scenario: Successfully sync latest created contacts
     Given partner creates a new contact via EPP
     When  system syncs latest created contacts
     Then  latest created contacts must be synced
