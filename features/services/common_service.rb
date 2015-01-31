@@ -49,6 +49,25 @@ def system_completed_sync
   SyncLog.create since: last_run, up_to: last_run
 end
 
+def sync_records to:, command:, request:
+  response = REGISTRY_RESPONSES[request]
+
+  stub_request(:post, to)
+    .with(headers: default_headers)
+    .to_return(status: response[:status], body: response[:body].to_json) unless @registry_unavailable
+
+  since = SyncLog.last_run
+  up_to = Request.latest_time
+
+  begin
+    command.call since, up_to
+  rescue => e
+    @exception_thrown = e
+  ensure
+    SyncLog.create since: since, until: up_to
+  end
+end
+
 def assert_sync_timed_out
   @exception_thrown.message.must_include 'getaddrinfo'
 end

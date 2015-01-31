@@ -3,22 +3,9 @@ def partner_registers_domain
 end
 
 def system_syncs_latest_registered_domains request: VALID_CREATE_REQUEST
-  registry_response = REGISTRY_RESPONSES[request]
-
-  stub_request(:post, orders_url)
-    .with(headers: default_headers)
-    .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
-
-  since = SyncLog.last_run
-  up_to = Request.latest_time
-
-  begin
-    RegisterDomain.sync since: since, up_to: up_to
-  rescue => e
-    @exception_thrown = e
-  ensure
-    SyncLog.create since: since, until: up_to
-  end
+  sync_records  to: orders_url,
+                command: proc { |since, up_to| RegisterDomain.sync since: since, up_to: up_to },
+                request: request
 end
 
 def assert_register_domain_synced

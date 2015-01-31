@@ -3,22 +3,9 @@ def partner_creates_contact handle: 'contact_handle', on: Time.now
 end
 
 def system_syncs_latest_created_contacts request: VALID_CREATE_REQUEST
-  registry_response = REGISTRY_RESPONSES[request]
-
-  stub_request(:post, contacts_url)
-    .with(headers: default_headers)
-    .to_return(status: registry_response[:status], body: registry_response[:body].to_json) unless @registry_unavailable
-
-  since = SyncLog.last_run
-  up_to = Request.latest_time
-
-  begin
-    CreateContact.sync since: since, up_to: up_to
-  rescue => e
-    @exception_thrown = e
-  ensure
-    SyncLog.create since: since, until: up_to
-  end
+  sync_records  to: contacts_url,
+                command: proc { |since, up_to| CreateContact.sync since: since, up_to: up_to },
+                request: request
 end
 
 def assert_create_contact_synced
