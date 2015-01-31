@@ -6,5 +6,6 @@ class Sync
     SyncLog.create since: since, up_to: up_to
 
     CreateContact.sync  since: since, up_to: up_to
+    RegisterDomain.sync since: since, up_to: up_to
   end
 end
