@@ -2,6 +2,12 @@ Given /^partner registers a domain via EPP$/ do
   partner_registers_domain
 end
 
+Given /^partner registered domains and were already synced$/ do
+  partner_registers_domain on: '2014-03-26'.to_time, name: 'old.ph'
+  partner_registers_domain on: '2014-03-19'.to_time, name: 'older.ph'
+  partner_registers_domain on: '2014-01-01'.to_time, name: 'oldest.ph'
+end
+
 When /^system syncs latest registered domains$/ do
   system_authenticated
   system_syncs_latest_registered_domains
@@ -29,4 +35,8 @@ end
 
 Then /^latest registered domains must be synced$/ do
   assert_register_domain_synced
+end
+
+Then /^no domains must be synced$/ do
+  assert_no_domains_synced
 end

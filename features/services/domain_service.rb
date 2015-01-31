@@ -1,5 +1,5 @@
-def partner_registers_domain
-  register_domain
+def partner_registers_domain on: Time.now, name: 'test.ph'
+  register_domain on: on, name: name
 end
 
 def system_syncs_latest_registered_domains request: VALID_CREATE_REQUEST
@@ -29,4 +29,10 @@ def register_domain_request
       }
     ]
   }
+end
+
+def assert_no_domains_synced
+  assert_no_exception_thrown
+
+  assert_not_requested :post, orders_url
 end

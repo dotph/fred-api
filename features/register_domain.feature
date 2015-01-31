@@ -27,3 +27,8 @@ Feature: Register Domain
       | incomplete fields                   | bad request           |
       | empty request                       | bad request           |
       | invalid authentication credentials  | authentication failed |
+
+  Scenario: Exclude domains that were already synced
+    Given partner registered domains and were already synced
+    When  system syncs latest registered domains
+    Then  no domains must be synced
