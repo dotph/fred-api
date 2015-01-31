@@ -13,6 +13,9 @@ class RegisterDomain
   end
 
   def self.sync since:, up_to:
+    all(since: since, up_to: up_to).each do |record|
+      SyncRegisterDomainJob.perform_later record.as_json
+    end
   end
 
   def as_json options = nil
