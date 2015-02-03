@@ -39,13 +39,10 @@ module SyncJob
   end
 
   def headers token: nil
-    headers = {
-      'Content-Type' => 'application/json',
-    }
-
-    headers['Authorization'] = "Token token=\"#{token}\"" if token
-
-    headers
+    {}.tap do |headers|
+      headers['Authorization'] = "Token token=\"#{token}\"" if token
+      headers['Content-Type']  = 'application/json'
+    end
   end
 
   def error_code code
