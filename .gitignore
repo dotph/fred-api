@@ -12,8 +12,5 @@
 !/log/.keep
 /tmp
 
-# Ignore Minitest reports
-/test/reports
-
 # CTags
 tags
