@@ -8,8 +8,9 @@ describe CreateContact do
       create_contact on: current_time + 1.minute
     end
 
+    let(:current_time) { Time.now }
+
     context :contacts_match do
-      let(:current_time) { Time.now }
       let(:since) { current_time }
       let(:up_to) { current_time + 1.minute }
 
