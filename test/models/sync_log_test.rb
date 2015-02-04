@@ -18,10 +18,8 @@ describe SyncLog do
   end
 
   describe :aliases do
-    it 'aliases until as up_to' do
-      current_time = Time.now
+    subject { SyncLog.new(until: Time.now) }
 
-      SyncLog.new(until: current_time).up_to.must_equal current_time
-    end
+    specify { subject.up_to.must_equal subject.until }
   end
 end

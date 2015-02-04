@@ -3,7 +3,7 @@ require 'test_helper'
 class Sanity; end
 
 describe Sanity do
-  it 'is true if true' do
-    true.must_equal true
-  end
+  subject { true }
+
+  specify { subject.must_equal true }
 end

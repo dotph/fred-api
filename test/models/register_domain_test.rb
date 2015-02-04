@@ -2,27 +2,34 @@ require 'test_helper'
 
 describe RegisterDomain do
   describe :all do
-    it 'returns all new registered domains' do
-      current_time = Time.now
+    subject {
+      RegisterDomain.all  since: current_time,
+                          up_to: current_time + 1.minute
+    }
 
+    let(:current_time) { Time.now }
+
+    before do
       register_domain on: current_time + 1.minute
-
-      result = RegisterDomain.all since: current_time,
-                                  up_to: current_time + 1.minute
-
-      result.count.must_equal 1
-
-      order = result.first
-      order.partner.must_equal 'alpha'
-      order.domain.must_equal 'test.ph'
-      order.period.must_equal 1
-      order.registrant_handle.must_equal 'contact_handle'
     end
+
+    specify { subject.count.must_equal 1 }
+    specify { subject.first.partner.must_equal 'alpha' }
+    specify { subject.first.domain.must_equal 'test.ph' }
+    specify { subject.first.period.must_equal 1 }
+    specify { subject.first.registrant_handle.must_equal 'contact_handle' }
   end
 
   describe :as_json do
-    it 'converts to JSON' do
-      expected_json = {
+    subject {
+      RegisterDomain.new  partner: 'alpha',
+                          domain: 'test.ph',
+                          period: 1,
+                          registrant_handle: 'contact_handle'
+    }
+
+    let(:expected_json) {
+      {
         partner: 'alpha',
         currency_code: 'USD',
         order_details: [
@@ -34,23 +41,18 @@ describe RegisterDomain do
           }
         ]
       }
+    }
 
-      record = RegisterDomain.new partner: 'alpha',
-                                  domain: 'test.ph',
-                                  period: 1,
-                                  registrant_handle: 'contact_handle'
-
-      record.as_json.must_equal expected_json
-    end
+    specify { subject.as_json.must_equal expected_json }
   end
 
   describe :aliases do
-    it 'aliases domain as handle' do
-      RegisterDomain.new(domain: 'value').handle.must_equal 'value'
-    end
+    subject {
+      RegisterDomain.new  domain: 'domain',
+                          registrant_handle: 'handle'
+    }
 
-    it 'aliases registrant_handle as registrant' do
-      RegisterDomain.new(registrant_handle: 'value').registrant.must_equal 'value'
-    end
+    specify { subject.handle.must_equal subject.domain }
+    specify { subject.registrant.must_equal subject.registrant_handle }
   end
 end
