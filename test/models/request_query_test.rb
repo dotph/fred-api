@@ -2,69 +2,55 @@ require 'test_helper'
 
 describe RequestQuery do
   describe :run do
+    subject { RequestQuery.run(since: since.to_time, up_to: up_to.to_time, type: type).count }
+
+    let(:timestamp) { '2015-02-04 1:00 PM' }
+    let(:type) { RequestType::CONTACT_CREATE }
+
+    let(:since) { '2015-02-04 7:00 AM' }
+    let(:up_to) { '2015-02-04 7:00 PM' }
+
     before do
-      @current_time = Time.now
-      @create_time  = @current_time + 1.minute
-
-      create_contact  on: @create_time
-      register_domain on: @create_time
-      register_domain on: @create_time
+      create_contact  on: timestamp.to_time
     end
 
-    it 'returns contact_create requests' do
-      result = RequestQuery.run since: @current_time,
-                                up_to: @create_time,
-                                type: RequestType::CONTACT_CREATE
-
-      result.count.must_equal 1
+    context :contact_create_records do
+      specify { subject.must_equal 1 }
     end
 
-    it 'returns contact_create requests' do
-      result = RequestQuery.run since: @current_time,
-                                up_to: @create_time,
-                                type: RequestType::DOMAIN_CREATE
+    context :register_domain_records do
+      before do
+        register_domain on: timestamp.to_time
+        register_domain on: timestamp.to_time
+      end
 
-      result.count.must_equal 2
+      let(:type) { RequestType::DOMAIN_CREATE }
+
+      specify { subject.must_equal 2 }
     end
 
-    it 'returns records with time_end same as up_to' do
-      create_contact on: '2015-01-30 6:00 PM'.to_time
+    context :up_to_same_as_record_timestamp do
+      let(:up_to) { timestamp }
 
-      result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time,
-                                type:  RequestType::CONTACT_CREATE
-
-      result.count.must_equal 1
+      specify { subject.must_equal 1 }
     end
 
-    it 'does not return records with time_begin same as since' do
-      create_contact on: '2015-01-30 5:00 PM'.to_time
+    context :since_same_as_record_timestamp do
+      let(:since) { timestamp }
 
-      result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time,
-                                type:  RequestType::CONTACT_CREATE
-
-      result.must_be_empty
+      specify { subject.must_equal 0 }
     end
 
-    it 'does not return records with time_end after up_to' do
-      create_contact on: '2015-01-30 6:01 PM'.to_time
+    context :up_to_after_record_timestamp do
+      let(:up_to) { '2015-02-04 9:00 AM' }
 
-      result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time,
-                                type:  RequestType::CONTACT_CREATE
-
-      result.must_be_empty
+      specify { subject.must_equal 0 }
     end
 
-    it 'does not return records with time_begin before since' do
-      create_contact on: '2015-01-30 4:59 PM'.to_time
+    context :since_before_record_timestamp do
+      let(:since) { '2015-02-04 2:00 PM' }
 
-      result = RequestQuery.run since: '2015-01-30 5:00 PM'.to_time,
-                                up_to: '2015-01-30 6:00 PM'.to_time,
-                                type:  RequestType::CONTACT_CREATE
-
-      result.must_be_empty
+      specify { subject.must_equal 0 }
     end
   end
 
