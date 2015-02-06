@@ -55,41 +55,41 @@ describe RequestQuery do
   end
 
   describe :group do
-    it 'groups all records' do
-      records = [
-        { 'id' => 1, 'partner' => 'alpha', 'name' => 'a', 'value' => 'a_value' },
-        { 'id' => 1, 'partner' => 'alpha', 'name' => 'b', 'value' => 'b_value' },
-        { 'id' => 1, 'partner' => 'alpha', 'name' => 'c', 'value' => 'c_value' },
-      ]
+    subject { RequestQuery.group(records) }
 
-      result = RequestQuery.group(records)
+    context :groups_all_records do
+      let(:records) {
+        [
+          { 'id' => 1, 'partner' => 'alpha', 'name' => 'a', 'value' => 'a_value' },
+          { 'id' => 1, 'partner' => 'alpha', 'name' => 'b', 'value' => 'b_value' },
+          { 'id' => 1, 'partner' => 'alpha', 'name' => 'c', 'value' => 'c_value' },
+        ]
+      }
 
-      result.count.must_equal 1
-      result.first.must_equal({ 'partner' => 'alpha', 'a' => 'a_value', 'b' => 'b_value', 'c' => 'c_value' })
+      specify { subject.count.must_equal 1 }
+      specify { subject.first.must_equal({ 'partner' => 'alpha', 'a' => 'a_value', 'b' => 'b_value', 'c' => 'c_value' }) }
     end
 
-    it 'converts . to _' do
-      records = [
-        { 'id' => 1, 'partner' => 'alpha', 'name' => 'a.x', 'value' => 'a_value' }
-      ]
+    context :converts_dot_to_underscore do
+      let(:records) {
+        [ { 'id' => 1, 'partner' => 'alpha', 'name' => 'a.x', 'value' => 'a_value' } ]
+      }
 
-      result = RequestQuery.group(records)
-
-      result.first.must_equal({ 'partner' => 'alpha', 'a_x' => 'a_value' })
+      specify { subject.first.must_equal({ 'partner' => 'alpha', 'a_x' => 'a_value' }) }
     end
 
-    it 'converts to downcase' do
-      records = [
-        { 'id' => 1, 'partner' => 'alpha', 'name' => 'Ax', 'value' => 'a_value' }
-      ]
+    context :converts_to_downcase do
+      let(:records) {
+        [ { 'id' => 1, 'partner' => 'alpha', 'name' => 'Ax', 'value' => 'a_value' } ]
+      }
 
-      result = RequestQuery.group(records)
-
-      result.first.must_equal({ 'partner' => 'alpha', 'ax' => 'a_value' })
+      specify { subject.first.must_equal({ 'partner' => 'alpha', 'ax' => 'a_value' }) }
     end
 
-    it 'returns empty list if records empty' do
-      RequestQuery.group([]).must_be_empty
+    context :return_empty_list_if_records_empty do
+      let(:records) { [] }
+
+      specify { subject.must_be_empty }
     end
   end
 end
